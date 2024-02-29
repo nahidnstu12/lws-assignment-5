@@ -1,4 +1,5 @@
 import React from "react";
+import BlogCard from "./BlogCard";
 
 export default function ProfileComponent() {
   return (
@@ -10,7 +11,7 @@ export default function ProfileComponent() {
               <span className="">S</span>
             </div>
             <button className="grid place-items-center absolute bottom-0 right-0 h-7 w-7 rounded-full bg-slate-700 hover:bg-slate-700/80">
-              <img src="./assets/icons/edit.svg" alt="Edit" />
+              <img src="/src/assets/icons/edit.svg" alt="Edit" />
             </button>
           </div>
           <div>
@@ -32,7 +33,7 @@ export default function ProfileComponent() {
               </p>
             </div>
             <button className="flex-center h-7 w-7 rounded-full">
-              <img src="./assets/icons/edit.svg" alt="Edit" />
+              <img src="/src/assets/icons/edit.svg" alt="Edit" />
             </button>
           </div>
           <div className="w-3/4 border-b border-[#3F3F3F] py-6 lg:py-8" />

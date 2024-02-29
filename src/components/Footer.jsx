@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="my-6 md:my-8 bg-[#030317]">
       <div className="container mx-auto flex items-center justify-between">
         <a href="/">
-          <img className="w-28" src="./assets/logo.svg" alt="lws" />
+          <img className="w-28" src="/src/assets/logo.svg" alt="lws" />
         </a>
         <ul className="flex items-center space-x-5">
           <li className="text-center">

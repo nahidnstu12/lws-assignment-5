@@ -5,7 +5,7 @@ export default function BlogCard() {
     <div className="blog-card">
       <img
         className="blog-thumb"
-        src="./assets/blogs/React-Roadmap.jpg"
+        src="/src/assets/blogs/React-Roadmap.jpg"
         alt=""
       />
       <div className="mt-2 relative">
@@ -37,21 +37,21 @@ export default function BlogCard() {
             <span>100 Likes</span>
           </div>
         </div>
-        <div className="absolute right-0 top-0">
+        {/* <div className="absolute right-0 top-0">
           <button>
-            <img src="./assets/icons/3dots.svg" alt="3dots of Action" />
+            <img src="/src/assets/icons/3dots.svg" alt="3dots of Action" />
           </button>
           <div className="action-modal-container">
             <button className="action-menu-item hover:text-lwsGreen">
-              <img src="./assets/icons/edit.svg" alt="Edit" />
+              <img src="/src/assets/icons/edit.svg" alt="Edit" />
               Edit
             </button>
             <button className="action-menu-item hover:text-red-500">
-              <img src="./assets/icons/delete.svg" alt="Delete" />
+              <img src="/src/assets/icons/delete.svg" alt="Delete" />
               Delete
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -22,7 +22,7 @@ export default function BlogDetails() {
             </div>
             <img
               className="mx-auto w-full md:w-8/12 object-cover h-80 md:h-96"
-              src="./assets/blogs/React-Roadmap.jpg"
+              src="/src/assets/blogs/React-Roadmap.jpg"
               alt=""
             />
             <ul className="tags">
@@ -78,15 +78,15 @@ const FloatingAction = () => {
     <div className="floating-action">
       <ul className="floating-action-menus">
         <li>
-          <img src="./assets/icons/like.svg" alt="like" />
+          <img src="/src/assets/icons/like.svg" alt="like" />
           <span>10</span>
         </li>
         <li>
-          <img src="./assets/icons/heart.svg" alt="Favourite" />
+          <img src="/src/assets/icons/heart.svg" alt="Favourite" />
         </li>
         <a href="#comments">
           <li>
-            <img src="./assets/icons/comment.svg" alt="Comments" />
+            <img src="/src/assets/icons/comment.svg" alt="Comments" />
             <span>3</span>
           </li>
         </a>

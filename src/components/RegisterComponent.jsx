@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function LoginComponent() {
+export default function RegisterComponent() {
   return (
     <main>
       <section className="container">

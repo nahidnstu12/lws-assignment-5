@@ -6,7 +6,7 @@ export default function Header() {
       <nav class="container">
         <div>
           <a href="./index.html">
-            <img class="w-32" src="./assets/logo.svg" alt="lws" />
+            <img class="w-32" src="/src/assets/logo.svg" alt="lws" />
           </a>
         </div>
 
@@ -25,7 +25,7 @@ export default function Header() {
                 href="./search.html"
                 class="flex items-center gap-2 cursor-pointer"
               >
-                <img src="./assets/icons/search.svg" alt="Search" />
+                <img src="/src/assets/icons/search.svg" alt="Search" />
                 <span>Search</span>
               </a>
             </li>

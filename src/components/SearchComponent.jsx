@@ -24,7 +24,7 @@ export default function SearchComponent() {
         </div>
         <a href="./index.html">
           <img
-            src="./assets/icons/close.svg"
+            src="/src/assets/icons/close.svg"
             alt="Close"
             className="absolute right-2 top-2 cursor-pointer w-8 h-8"
           />
@@ -39,7 +39,7 @@ const BlogCard = () => {
     <div className="flex gap-6 py-2">
       <img
         className="h-28 object-contain"
-        src="./assets/blogs/taiulwind-cn-thumb.jpg"
+        src="/src/assets/blogs/taiulwind-cn-thumb.jpg"
         alt=""
       />
       <div className="mt-2">

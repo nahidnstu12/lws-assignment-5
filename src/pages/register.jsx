@@ -1,7 +1,13 @@
-import React from 'react'
+import React from "react";
+import RegisterComponent from "../components/RegisterComponent";
 
-export default function Home() {
+
+export default function Register() {
   return (
-    <div>Home Page</div>
-  )
+    <>
+     
+      <RegisterComponent />
+     
+    </>
+  );
 }
