@@ -6,9 +6,9 @@ import Bloglist from '../components/Bloglist'
 export default function Home() {
   return (
     <>
-      <Header />
+      
       <Bloglist />
-      <Footer />
+     
     </>
   )
 }

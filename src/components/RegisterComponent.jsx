@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 
 export default function RegisterComponent() {
   return (
@@ -61,12 +62,12 @@ export default function RegisterComponent() {
             </div>
             <p className="text-center">
               Already have account?{" "}
-              <a
-                href="./login.html"
+              <Link
+                to="/login"
                 className="text-indigo-600 hover:underline"
               >
                 Login
-              </a>
+              </Link>
             </p>
           </form>
         </div>

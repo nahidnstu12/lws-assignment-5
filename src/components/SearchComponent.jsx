@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function SearchComponent() {
   return (
@@ -22,13 +23,13 @@ export default function SearchComponent() {
             ))}
           </div>
         </div>
-        <a href="./index.html">
+        <Link to="/">
           <img
             src="/src/assets/icons/close.svg"
             alt="Close"
             className="absolute right-2 top-2 cursor-pointer w-8 h-8"
           />
-        </a>
+        </Link>
       </div>
     </section>
   );

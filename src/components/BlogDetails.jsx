@@ -1,5 +1,6 @@
 import React from "react";
 import CommentSection from "./CommentSection";
+import { Link } from "react-router-dom";
 
 export default function BlogDetails() {
   return (
@@ -84,12 +85,12 @@ const FloatingAction = () => {
         <li>
           <img src="/src/assets/icons/heart.svg" alt="Favourite" />
         </li>
-        <a href="#comments">
+        <Link to="#comments">
           <li>
             <img src="/src/assets/icons/comment.svg" alt="Comments" />
             <span>3</span>
           </li>
-        </a>
+        </Link>
       </ul>
     </div>
   );

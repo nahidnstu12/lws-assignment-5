@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 
 export default function CreateBlog() {
   return (
@@ -50,12 +51,12 @@ export default function CreateBlog() {
                 defaultValue={""}
               />
             </div>
-            <a
-              href="./createBlog.html"
+            <Link
+              to="/write-blog"
               className="bg-indigo-600 text-white px-6 py-2 md:py-3 rounded-md hover:bg-indigo-700 transition-all duration-200"
             >
               Create Blog
-            </a>
+            </Link>
           </form>
         </div>
       </section>

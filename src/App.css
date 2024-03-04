@@ -43,6 +43,10 @@
     @apply flex gap-4 flex-col md:flex-row  bg-[#030317] p-3 border border-slate-800/40 rounded-lg transition-all hover:border-blue-900/50 hover:shadow-lg shadow-slate-200/50 cursor-pointer;
   }
 
+  .blog-card > a {
+    @apply flex-1;
+  }
+  
   .blog-card > div {
     @apply flex-1;
   }
