@@ -6,9 +6,9 @@ import RegisterComponent from "../components/RegisterComponent";
 export default function Register() {
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <RegisterComponent />
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

@@ -13,13 +13,13 @@ const PrivateRoutes = () => {
     <>
       {auth.authToken ? (
         <>
-          <Header />
+          {/* <Header /> */}
           <main className="mx-auto max-w-[1020px] py-8">
             <div className="container">
               <Outlet />
             </div>
           </main>
-          <Footer />
+          {/* <Footer /> */}
         </>
       ) : (
         <Navigate to="/login" />
