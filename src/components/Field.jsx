@@ -3,9 +3,9 @@ import React from "react";
 const Field = ({ label, children, htmlFor, error }) => {
   const id = htmlFor || getChildId(children);
   return (
-    <div className="form-control">
+    <div className="mb-6">
       {label && (
-        <label htmlFor={id} className="auth-label">
+        <label htmlFor={id} className="block mb-2">
           {label}
         </label>
       )}

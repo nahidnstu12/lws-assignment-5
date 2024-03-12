@@ -1,3 +1,4 @@
 export const key = {
-    blogs: "blogs"
+    blogs: "blogs",
+    register: "register",
 }

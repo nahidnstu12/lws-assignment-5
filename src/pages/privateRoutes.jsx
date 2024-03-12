@@ -1,25 +1,24 @@
 import { Navigate, Outlet } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { useAuth } from "../hooks/useAuth";
 
 
 const PrivateRoutes = () => {
-    // fake auth
-  const auth = {
-    authToken: true,
-  };
+    const { auth } = useAuth();
+    console.log("PrivateRoutes:", auth);
 
   return (
     <>
-      {auth.authToken ? (
+      {auth?.token?.accessToken ? (
         <>
-          {/* <Header /> */}
+          <Header />
           <main className="mx-auto max-w-[1020px] py-8">
             <div className="container">
               <Outlet />
             </div>
           </main>
-          {/* <Footer /> */}
+          <Footer />
         </>
       ) : (
         <Navigate to="/login" />

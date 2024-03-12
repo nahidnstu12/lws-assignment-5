@@ -1,57 +1,100 @@
 import React from 'react'
+import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import Field from './Field';
+import useAuthService from '../utils/authService';
 
 export default function RegisterComponent() {
+  const { register: registerHandler } = useAuthService();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm();
+
+  const submitForm = async (formData) => {
+    // console.log(formData);
+    try {
+      
+      let response = registerHandler.mutate(formData);
+      console.log({response});
+
+      if (response.status === 201) {
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error(error);
+      setError("root.random", {
+        type: "random",
+        message: `Something went wrong: ${error.message}`,
+      });
+    }
+  };
   return (
     <main>
       <section className="container">
         <div className="w-full md:w-1/2 mx-auto bg-[#030317] p-8 rounded-md mt-12">
           <h2 className="text-2xl font-bold mb-6">Register</h2>
-          <form action="" autoComplete="off">
-            <div className="mb-6">
-              <label htmlFor="firstName" className="block mb-2">
-                First Name
-              </label>
+          <form
+            action=""
+            autoComplete="off"
+            onSubmit={handleSubmit(submitForm)}
+          >
+            <Field label="First Name" error={errors.firstName}>
               <input
-                type="text"
-                id="firstName"
+                {...register("firstName", {
+                  required: "First Name is Required",
+                })}
+                className={`auth-input ${
+                  !!errors.firstName ? "border-red-500" : "border-white/20"
+                }`}
+                type="firstName"
                 name="firstName"
-                className="w-full p-3 bg-[#030317] border border-white/20 rounded-md focus:outline-none focus:border-indigo-500"
+                id="firstName"
               />
-            </div>
-            <div className="mb-6">
-              <label htmlFor="lastName" className="block mb-2">
-                Last Name
-              </label>
+            </Field>
+            <Field label="Last Name" error={errors.lastName}>
               <input
-                type="text"
-                id="lastName"
+                {...register("lastName")}
+                className={`auth-input ${
+                  !!errors.lastName ? "border-red-500" : "border-white/20"
+                }`}
+                type="lastName"
                 name="lastName"
-                className="w-full p-3 bg-[#030317] border border-white/20 rounded-md focus:outline-none focus:border-indigo-500"
+                id="lastName"
               />
-            </div>
-            <div className="mb-6">
-              <label htmlFor="email" className="block mb-2">
-                Email
-              </label>
+            </Field>
+            <Field label="Email" error={errors.email}>
               <input
+                {...register("email", { required: "Email ID is Required" })}
+                className={`auth-input ${
+                  !!errors.email ? "border-red-500" : "border-white/20"
+                }`}
                 type="email"
-                id="email"
                 name="email"
-                className="w-full p-3 bg-[#030317] border border-white/20 rounded-md focus:outline-none focus:border-indigo-500"
+                id="email"
               />
-            </div>
-            <div className="mb-6">
-              <label htmlFor="password" className="block mb-2">
-                Password
-              </label>
+            </Field>
+
+            <Field label="Password" error={errors.password}>
               <input
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 8,
+                    message: "Your password must be at least 8 characters",
+                  },
+                })}
+                className={`auth-input ${
+                  !!errors.password ? "border-red-500" : "border-white/20"
+                }`}
                 type="password"
-                id="password"
                 name="password"
-                className="w-full p-3 bg-[#030317] border border-white/20 rounded-md focus:outline-none focus:border-indigo-500"
+                id="password"
               />
-            </div>
+            </Field>
+            <p className="mb-6">{errors?.root?.random?.message}</p>
             <div className="mb-6">
               <button
                 type="submit"
@@ -62,10 +105,7 @@ export default function RegisterComponent() {
             </div>
             <p className="text-center">
               Already have account?{" "}
-              <Link
-                to="/login"
-                className="text-indigo-600 hover:underline"
-              >
+              <Link to="/login" className="text-indigo-600 hover:underline">
                 Login
               </Link>
             </p>

@@ -1,10 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { api } from "./axios";
+import useAxios from "../hooks/useAxios";
 import { key } from "./queryKey";
 
 const useBlogService = () => {
+  const { api } = useAxios();
   const queryClient = useQueryClient();
-  const baseURL = `${import.meta.env.VITE_API_KEY}/blogs`;
+  const baseURL = `/blogs`;
 
   const getList = async ({ queryKey }) => {
     const url =
@@ -15,8 +16,20 @@ const useBlogService = () => {
     const response = await api.get(url);
     return response.data;
   };
-  const getPopularList = async () => {
-    const response = await api.get(`${baseURL}/popular`);
+  const getPopularList = async ({ queryKey }) => {
+    const url =
+      queryKey[1]?.page && queryKey[1]?.limit
+        ? `/blogs/popular?page=${queryKey[1]?.page}&limit=${queryKey[1]?.limit}`
+        : "/blogs/popular";
+    const response = await api.get(url);
+    return response.data;
+  };
+  const getfavoriteList = async ({ queryKey }) => {
+    const url =
+      queryKey[1]?.page && queryKey[1]?.limit
+        ? `${baseURL}/favourites?page=${queryKey[1]?.page}&limit=${queryKey[1]?.limit}`
+        : "/blogs/favourites";
+    const response = await api.get(url);
     return response.data;
   };
   const getOne = async ({ queryKey }) => {
@@ -56,7 +69,15 @@ const useBlogService = () => {
     },
   });
 
-  return { getList, getOne, getPopularList, create, update, remove };
+  return {
+    getList,
+    getOne,
+    getPopularList,
+    getfavoriteList,
+    create,
+    update,
+    remove,
+  };
 };
 
 export default useBlogService;

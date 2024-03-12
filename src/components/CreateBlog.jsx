@@ -1,12 +1,55 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React, { useRef } from "react";
+import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+import Field from "./Field";
+import useBlogService from "../utils/blogService";
 
 export default function CreateBlog() {
+    const { create } = useBlogService();
+  
+  const fileUploaderRef = useRef();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm();
+  const handleFileUpload = () => {
+    const fileInput = fileUploaderRef.current;
+    if (fileInput && fileInput?.files) {
+      const file = fileInput?.files[0];
+      console.log(file);
+      return file;
+    }
+    return null;
+  };
+  const handleBlogSubmit = (data) => {
+    // event.preventDefault();
+    const formdata = new FormData();
+    formdata.append("title", data?.title);
+    formdata.append("tags", data?.tags);
+    formdata.append("content", data?.content);
+    const file = handleFileUpload();
+    if (file) {
+      formdata.append("file", file);
+    }
+
+    console.log("formdata--", formdata, data);
+    create.mutate(data);
+    // fileUploaderRef.current.addEventListener("change", updateImageDisplay);
+    // fileUploaderRef.current.click();
+  };
   return (
     <main>
       <section>
         <div className="container">
-          <form action="#" method="POST" className="createBlog">
+          <form
+            action="#"
+            method="POST"
+            className="createBlog"
+            encType="multipart/form-data"
+            onSubmit={handleSubmit(handleBlogSubmit)}
+          >
             <div className="grid place-items-center bg-slate-600/20 h-[150px] rounded-md my-4">
               <div className="flex items-center gap-4 hover:scale-110 transition-all cursor-pointer">
                 <svg
@@ -24,39 +67,66 @@ export default function CreateBlog() {
                   />
                 </svg>
                 <p>Upload Your Image</p>
+                <input
+                  type="file"
+                  name="file"
+                  id="photo"
+                  className=""
+                  accept="image/*"
+                  {...register("image")}
+                />
+                {/* <input id="file" type="file" ref={fileUploaderRef} hidden /> */}
               </div>
             </div>
             <div className="mb-6">
-              <input
-                type="text"
-                id="title"
-                name="title"
-                placeholder="Enter your blog title"
-              />
+              <Field error={errors.title}>
+                <input
+                  {...register("title", { required: "Title is Required" })}
+                  className={`${
+                    !!errors.title ? "border-red-500" : "border-white/20"
+                  }`}
+                  type="text"
+                  name="title"
+                  id="title"
+                  placeholder="Enter your blog title"
+                />
+              </Field>
             </div>
             <div className="mb-6">
-              <input
-                type="text"
-                id="tags"
-                name="tags"
-                placeholder="Your Comma Separated Tags Ex. JavaScript, React, Node, Express,"
-              />
+              <Field error={errors.tags}>
+                <input
+                  {...register("tags", { required: "tags is Required" })}
+                  className={`${
+                    !!errors.tags ? "border-red-500" : "border-white/20"
+                  }`}
+                  type="text"
+                  name="tags"
+                  id="tags"
+                  placeholder="Your Comma Separated Tags Ex. JavaScript, React, Node, Express,"
+                />
+              </Field>
             </div>
             <div className="mb-6">
-              <textarea
-                id="content"
-                name="content"
-                placeholder="Write your blog content"
-                rows={8}
-                defaultValue={""}
-              />
+              <Field error={errors.content}>
+                <textarea
+                  {...register("content", { required: "content is Required" })}
+                  className={`${
+                    !!errors.content ? "border-red-500" : "border-white/20"
+                  }`}
+                  id="content"
+                  name="content"
+                  placeholder="Write your blog content"
+                  rows={8}
+                  defaultValue={""}
+                />
+              </Field>
             </div>
-            <Link
-              to="/write-blog"
+            <button
+              type="submit"
               className="bg-indigo-600 text-white px-6 py-2 md:py-3 rounded-md hover:bg-indigo-700 transition-all duration-200"
             >
               Create Blog
-            </Link>
+            </button>
           </form>
         </div>
       </section>
