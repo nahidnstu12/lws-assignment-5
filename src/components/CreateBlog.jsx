@@ -1,43 +1,28 @@
 import React, { useRef } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import Field from "./Field";
 import useBlogService from "../utils/blogService";
+import Field from "./Field";
 
 export default function CreateBlog() {
-    const { create } = useBlogService();
-  
+  const { create } = useBlogService();
+
   const fileUploaderRef = useRef();
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
   } = useForm();
-  const handleFileUpload = () => {
-    const fileInput = fileUploaderRef.current;
-    if (fileInput && fileInput?.files) {
-      const file = fileInput?.files[0];
-      console.log(file);
-      return file;
-    }
-    return null;
-  };
+  console.log("create blog error:", errors);
   const handleBlogSubmit = (data) => {
     // event.preventDefault();
     const formdata = new FormData();
     formdata.append("title", data?.title);
     formdata.append("tags", data?.tags);
     formdata.append("content", data?.content);
-    const file = handleFileUpload();
-    if (file) {
-      formdata.append("file", file);
-    }
+    if (data.thumbnail[0]) formdata.append("thumbnail", data.thumbnail[0]);
 
-    console.log("formdata--", formdata, data);
-    create.mutate(data);
-    // fileUploaderRef.current.addEventListener("change", updateImageDisplay);
-    // fileUploaderRef.current.click();
+    // console.log("formdata--", data, formdata);
+    create.mutate(formdata);
   };
   return (
     <main>
@@ -47,7 +32,7 @@ export default function CreateBlog() {
             action="#"
             method="POST"
             className="createBlog"
-            encType="multipart/form-data"
+            // encType="multipart/form-data"
             onSubmit={handleSubmit(handleBlogSubmit)}
           >
             <div className="grid place-items-center bg-slate-600/20 h-[150px] rounded-md my-4">
@@ -69,14 +54,21 @@ export default function CreateBlog() {
                 <p>Upload Your Image</p>
                 <input
                   type="file"
-                  name="file"
+                  name="thumbnail"
                   id="photo"
-                  className=""
+                  className="text-sm"
                   accept="image/*"
-                  {...register("image")}
+                  {...register("thumbnail", {
+                    required: "Thumbnail is Required",
+                  })}
+                  // hidden
                 />
-                {/* <input id="file" type="file" ref={fileUploaderRef} hidden /> */}
               </div>
+              {!!errors.thumbnail && (
+                <div role="alert" className="text-red-600">
+                  {errors.thumbnail.message}
+                </div>
+              )}
             </div>
             <div className="mb-6">
               <Field error={errors.title}>

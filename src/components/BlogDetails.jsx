@@ -2,6 +2,15 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import useBlogService from "../utils/blogService";
+import useFavoriteService from "../utils/favoriteService";
+import {
+  convertDateFormat,
+  firstAvatar,
+  fullName,
+  previewImage,
+  transformedText,
+} from "../utils/helpers";
+import useLikesService from "../utils/likeService";
 import { key } from "../utils/queryKey";
 import CommentSection from "./CommentSection";
 
@@ -16,7 +25,7 @@ export default function BlogDetails() {
     queryKey: [key.blogs, id],
     queryFn: getOne,
   });
-  console.log("details: ", blogData);
+  console.log("blogData:", blogData);
   return (
     <>
       <main>
@@ -28,23 +37,27 @@ export default function BlogDetails() {
             <div className="flex justify-center items-center my-4 gap-4">
               <div className="flex items-center capitalize space-x-2">
                 <div className="avater-img bg-indigo-600 text-white">
-                  <span className="">S</span>
+                  <span className="">
+                    {firstAvatar(blogData?.author?.firstName)}
+                  </span>
                 </div>
                 <h5 className="text-slate-500 text-sm">
-                  {" "}
-                  {blogData?.author?.firstName} {blogData?.author?.lastName}
+                  {fullName(
+                    blogData?.author?.firstName,
+                    blogData?.author?.lastName
+                  )}
                 </h5>
               </div>
               <span className="text-sm text-slate-700 dot">
-                {blogData?.createdAt}
+                {convertDateFormat(blogData?.createdAt)}
               </span>
               <span className="text-sm text-slate-700 dot">
-                {blogData?.likes?.length} Likes
+                {transformedText("Like", blogData?.likes?.length)}
               </span>
             </div>
             <img
               className="mx-auto w-full md:w-8/12 object-cover h-80 md:h-96"
-              src="/src/assets/blogs/React-Roadmap.jpg"
+              src={previewImage("blog", blogData?.thumbnail)}
               alt=""
             />
             <ul className="tags">
@@ -58,30 +71,57 @@ export default function BlogDetails() {
             ></div>
           </div>
         </section>
-        <CommentSection comments={blogData?.comments} />
+        <CommentSection comments={blogData?.comments} blogId={blogData?.id} />
       </main>
-      <FloatingAction />
+      <FloatingAction
+        blogId={blogData?.id}
+        isFavBlog={blogData?.isFavourite}
+        isLiked={blogData?.isLiked}
+        likeCount={blogData?.likes?.length}
+        commentCount={blogData?.comments?.length}
+      />
     </>
   );
 }
 
-const FloatingAction = () => {
+const FloatingAction = ({ blogId, isFavBlog, isLiked, likeCount, commentCount }) => {
+  const { toggle } = useFavoriteService();
+  const { toggle: toggleLike } = useLikesService();
+
+  const handleToggleFav = () => {
+    toggle.mutate(blogId);
+  };
+
+  const handleToggleLike = () => {
+    toggleLike.mutate(blogId);
+  };
+
   return (
     <div className="floating-action">
       <ul className="floating-action-menus">
-        <li>
-          <img src="/src/assets/icons/like.svg" alt="like" />
-          <span>10</span>
+        <li onClick={handleToggleLike}>
+          {/* TODO: Fix later */}
+          {isLiked ? (
+            <img src="/src/assets/icons/like-filled.svg" alt="Like" />
+          ) : (
+            <img src="/src/assets/icons/like.svg" alt="Like" />
+          )}
+          <span>{likeCount}</span>
         </li>
-        <li>
-          <img src="/src/assets/icons/heart.svg" alt="Favourite" />
+        <li onClick={handleToggleFav}>
+          {isFavBlog ? (
+            <img src="/src/assets/icons/heart-filled.svg" alt="Favourite" />
+          ) : (
+            <img src="/src/assets/icons/heart.svg" alt="Favourite" />
+          )}
         </li>
-        <Link to="#comments">
+        
+        <a href="#comments">
           <li>
             <img src="/src/assets/icons/comment.svg" alt="Comments" />
-            <span>3</span>
+            <span>{commentCount}</span>
           </li>
-        </Link>
+        </a>
       </ul>
     </div>
   );

@@ -1,28 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import {
   convertDateFormat,
   firstAvatar,
   fullName,
+  previewImage,
   transformedText,
 } from "../utils/helpers";
 
 export default function BlogCard({ blog }) {
   const { auth } = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleOpen = () => {
+    console.log("cliked");
+    setIsOpen((prev) => !prev);
+  };
   return (
     <div className="blog-card">
       <Link to={`/blog/${blog?.id}`}>
         <img
           className="blog-thumb"
-          src={
-            import.meta.env.VITE_SERVER_URI + "/uploads/blog/" + blog?.thumbnail
-          }
+          src={previewImage("blog", blog?.thumbnail)}
           alt=""
         />
       </Link>
-      <Link to={`/blog/${blog?.id}`}>
-        <div className="mt-2 relative">
+
+      <div className="mt-2 relative">
+        <Link to={`/blog/${blog?.id}`}>
           <h3 className="text-slate-300 text-xl lg:text-2xl">
             <Link to={`/blog/${blog?.id}`}>{blog?.title}</Link>
           </h3>
@@ -47,11 +53,13 @@ export default function BlogCard({ blog }) {
               <span>{transformedText("Like", blog?.likes?.length)}</span>
             </div>
           </div>
-          {auth?.user?.id === blog?.author?.id && (
-            <div className="absolute right-0 top-0">
-              <button>
-                <img src="/src/assets/icons/3dots.svg" alt="3dots of Action" />
-              </button>
+        </Link>
+        {auth?.user?.id === blog?.author?.id && (
+          <div className="absolute right-0 top-0">
+            <button onClick={handleOpen}>
+              <img src="/src/assets/icons/3dots.svg" alt="3dots of Action" />
+            </button>
+            {isOpen && (
               <div className="action-modal-container">
                 <button className="action-menu-item hover:text-lwsGreen">
                   <img src="/src/assets/icons/edit.svg" alt="Edit" />
@@ -62,10 +70,10 @@ export default function BlogCard({ blog }) {
                   Delete
                 </button>
               </div>
-            </div>
-          )}
-        </div>
-      </Link>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

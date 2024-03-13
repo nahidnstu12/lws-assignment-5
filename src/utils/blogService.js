@@ -1,10 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import useAxios from "../hooks/useAxios";
 import { key } from "./queryKey";
 
 const useBlogService = () => {
   const { api } = useAxios();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const baseURL = `/blogs`;
 
   const getList = async ({ queryKey }) => {
@@ -40,23 +42,20 @@ const useBlogService = () => {
   const create = useMutation({
     mutationFn: (body) => api.post(baseURL, body),
     onSuccess: (data, variables, context) => {
-      console.log("onSuccess", data, variables, context);
+      // console.log("onSuccess", data, variables, context, data?.data?.blog?.id);
       queryClient.invalidateQueries([key.blogs]);
-    },
-    onMutate: (variables) => {
-      console.log("onMtate:", variables);
-      return { greeting: "Say hello" };
+      navigate(`/blog/${data?.data?.blog?.id}`);
     },
   });
 
   const update = useMutation({
     mutationFn: (id, body) => api.patch(`${baseURL}/${id}`, body),
     onSuccess: (data, variables, context) => {
-      console.log("onSuccess", data, variables, context);
-      queryClient.invalidateQueries([key.blogs]);
+      // console.log("onSuccess", data, variables, context);
+      queryClient.invalidateQueries([key.blogs, data?.data?.blog?.id]);
     },
     onMutate: (variables) => {
-      console.log("onMtate:", variables);
+      // console.log("onMtate:", variables);
       return { greeting: "Say hello" };
     },
   });

@@ -11,9 +11,11 @@ export default function SidebarCard({ sectioTitle, blogs }) {
         {blogs?.length === 0 && <p>No data found</p>}
         {blogs?.map((blog) => (
           <li key={blog.id}>
-            <h3 className="text-slate-400 font-medium hover:text-slate-300 transition-all cursor-pointer">
-              {blog?.title}
-            </h3>
+            <Link to={`/blog/${blog?.id}`}>
+              <h3 className="text-slate-400 font-medium hover:text-slate-300 transition-all cursor-pointer">
+                {blog?.title}
+              </h3>
+            </Link>
             <p className="text-slate-600 text-sm">
               by
               <Link to={`/profile/${blog?.author?.id}`}>

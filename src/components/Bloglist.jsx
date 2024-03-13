@@ -1,21 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { useAuth } from "../hooks/useAuth";
 import useServiceHook from "../utils/blogService";
 import { key } from "../utils/queryKey";
 import BlogCard from "./BlogCard";
 import SidebarCard from "./SidebarCard";
 
 export default function Bloglist() {
-  const auth = useAuth();
-  const id = "4321b782f360f58c8c89";
   const { getList, getPopularList, getfavoriteList } = useServiceHook();
   const {
     data: blogItems,
     error,
     isLoading,
   } = useQuery({
-    queryKey: [key.blogs, { page: 1, limit: 10 }],
+    queryKey: [key.blogs, { page: 1, limit: 100 }],
     queryFn: getList,
   });
 

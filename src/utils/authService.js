@@ -42,7 +42,7 @@ const useAuthService = () => {
       queryClient.setQueryData([key.register], data.data);
       saveUser(data.data);
       setAuth(data.data);
-      navigate("/write-blog");
+      navigate("/");
     },
     onError: (error) => {
       console.error(error);

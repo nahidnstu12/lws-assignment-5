@@ -1,11 +1,12 @@
 export const fullName = (fn, ln) => fn + " " + ln;
 
-export const firstAvatar = (fn) => fn.charAt(0).toLocaleUpperCase();
+export const firstAvatar = (fn = "") => fn.charAt(0).toLocaleUpperCase();
 
-export const transformedText = (text, length)  => {
-return length <= 1 ? `${length} ${text}` : `${length} ${text}s`;
-}
-
+export const transformedText = (text, length) => {
+  return length <= 1 ? `${length} ${text}` : `${length} ${text}s`;
+};
+export const previewImage = (type, thumbnail) =>
+  `${import.meta.env.VITE_SERVER_URI}/uploads/${type}/${thumbnail}`;
 export function convertDateFormat(inputDate) {
   const date = new Date(inputDate);
 
