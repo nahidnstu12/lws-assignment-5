@@ -7,6 +7,7 @@ const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({});
   useEffect(() => {
     if (window) {
+      console.log("call 1");
       const loadUser = getUser(); //this is from localstorge data
       if (loadUser?.token?.accessToken) {
         setAuth(loadUser);

@@ -10,6 +10,7 @@ export function saveUser(user) {
 }
 
 export function getUser() {
+  console.log("call 2");
   const user = localStorage.getItem(USER_LOCAL_STORAGE_KEY);
   return user ? JSON.parse(user) : undefined;
 }

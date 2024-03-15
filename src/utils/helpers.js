@@ -5,6 +5,9 @@ export const firstAvatar = (fn = "") => fn.charAt(0).toLocaleUpperCase();
 export const transformedText = (text, length) => {
   return length <= 1 ? `${length} ${text}` : `${length} ${text}s`;
 };
+
+export const truncatedContent = (content) =>
+  content?.length > 200 ? content.substring(0, 200) + "..." : content;
 export const previewImage = (type, thumbnail) =>
   `${import.meta.env.VITE_SERVER_URI}/uploads/${type}/${thumbnail}`;
 export function convertDateFormat(inputDate) {

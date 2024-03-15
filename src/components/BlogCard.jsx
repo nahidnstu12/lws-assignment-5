@@ -7,6 +7,7 @@ import {
   fullName,
   previewImage,
   transformedText,
+  truncatedContent,
 } from "../utils/helpers";
 
 export default function BlogCard({ blog }) {
@@ -29,10 +30,10 @@ export default function BlogCard({ blog }) {
 
       <div className="mt-2 relative">
         <Link to={`/blog/${blog?.id}`}>
-          <h3 className="text-slate-300 text-xl lg:text-2xl">
-            <Link to={`/blog/${blog?.id}`}>{blog?.title}</Link>
-          </h3>
-          <p className="mb-6 text-base text-slate-500 mt-1">{blog?.content}</p>
+          <h3 className="text-slate-300 text-xl lg:text-2xl">{blog?.title}</h3>
+          <p className="mb-6 text-base text-slate-500 mt-1">
+            {truncatedContent(blog?.content)}
+          </p>
           <div className="flex justify-between items-center">
             <div className="flex items-center capitalize space-x-2">
               <div className="avater-img bg-indigo-600 text-white">

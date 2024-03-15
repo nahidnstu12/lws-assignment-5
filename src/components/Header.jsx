@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { firstAvatar, fullName, previewImage } from "../utils/helpers";
 
 export default function Header() {
   const { auth } = useAuth();
@@ -48,13 +49,23 @@ export default function Header() {
               </li>
             ) : (
               <li className="flex items-center">
-                <div className="avater-img bg-orange-600 text-white">
-                  <span className="">S</span>
-                </div>
+                {auth?.user?.avatar ? (
+                  <img
+                    className="avater-img"
+                    src={previewImage("avatar", auth?.user?.avatar)}
+                    alt={auth?.user?.firstName}
+                  />
+                ) : (
+                  <div className="avater-img bg-orange-600 text-white">
+                    <span className="">
+                      {firstAvatar(auth?.user?.firstName)}
+                    </span>
+                  </div>
+                )}
 
                 <Link to={`/profile/${auth?.user?.id}`}>
                   <span className="text-white ml-2">
-                    {auth?.user?.firstName} {auth?.user?.lastName}
+                    {fullName(auth?.user?.firstName, auth?.user?.lastName)}
                   </span>
                 </Link>
               </li>
