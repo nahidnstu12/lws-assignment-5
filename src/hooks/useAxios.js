@@ -1,17 +1,20 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { api } from "../utils/axios";
+import { getBrowserCookie, setBrowserCookie } from "../utils/cookieInstance";
+import { constant } from "../utils/queryKey";
 import { useAuth } from "./useAuth";
 
 const useAxios = () => {
   const { auth, setAuth } = useAuth();
-  console.log({ authToken: auth?.token?.accessToken });
+  // console.log({ authToken: auth?.accessToken });
 
   useEffect(() => {
     // Add a request interceptor
     const requestIntercept = api.interceptors.request.use(
       (config) => {
-        const authToken = auth?.token?.accessToken || "";
+        const authToken =
+          auth?.accessToken || getBrowserCookie(constant.Auth_Token) || "";
         if (authToken) {
           config.headers.Authorization = `Bearer ${authToken}`;
         }
@@ -26,24 +29,25 @@ const useAxios = () => {
       async (error) => {
         const originalRequest = error.config;
 
-        // If the error status is 401 and there is no originalRequest._retry flag,
+        // If the error status is 403 and there is no originalRequest._retry flag,
         // it means the token has expired and we need to refresh it
-        if (error.response.status === 401 && !originalRequest._retry) {
+        if (error.response.status === 403 && !originalRequest._retry) {
           originalRequest._retry = true;
 
           try {
-            const refreshToken = auth?.token?.refreshToken;
+            const oldRefreshToken = auth?.refreshToken;
             const response = await axios.post(
               `${import.meta.env.VITE_SERVER_URI}/auth/refresh-token`,
-              { refreshToken }
+              { refreshToken: oldRefreshToken }
             );
-            const { token } = response.data;
+            const { accessToken } = response.data;
 
-            console.log(`New Token: ${token}`);
-            setAuth({ ...auth, authToken: token });
+            console.log(`New Token: ${accessToken}`);
+            setBrowserCookie(constant.Auth_Token, accessToken);
+            setAuth({ ...auth, accessToken });
 
             // Retry the original request with the new token
-            originalRequest.headers.Authorization = `Bearer ${token}`;
+            originalRequest.headers.Authorization = `Bearer ${accessToken}`;
             return axios(originalRequest);
           } catch (error) {
             throw error;

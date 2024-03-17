@@ -9,15 +9,20 @@ import {
   transformedText,
   truncatedContent,
 } from "../utils/helpers";
+import useBlogService from "../utils/blogService";
 
 export default function BlogCard({ blog }) {
+  const {remove} = useBlogService();
   const { auth } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOpen = () => {
-    console.log("cliked");
     setIsOpen((prev) => !prev);
   };
+
+  const handleBlogDelete = () => {
+    remove.mutate(blog.id);
+  }
   return (
     <div className="blog-card">
       <Link to={`/blog/${blog?.id}`}>
@@ -66,7 +71,7 @@ export default function BlogCard({ blog }) {
                   <img src="/src/assets/icons/edit.svg" alt="Edit" />
                   Edit
                 </button>
-                <button className="action-menu-item hover:text-red-500">
+                <button onClick={handleBlogDelete} className="action-menu-item hover:text-red-500">
                   <img src="/src/assets/icons/delete.svg" alt="Delete" />
                   Delete
                 </button>

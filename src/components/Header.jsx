@@ -1,11 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { getBrowserCookie, removeBrowserCookie } from "../utils/cookieInstance";
 import { firstAvatar, fullName, previewImage } from "../utils/helpers";
+import { constant } from "../utils/queryKey";
 
 export default function Header() {
-  const { auth } = useAuth();
-  const isAuthed = auth?.token?.accessToken;
+  const { auth, setAuth } = useAuth();
+  const isAuthed = auth?.accessToken || getBrowserCookie(constant.Auth_Token); //temporarily
+  const authUser = auth?.user || getBrowserCookie(constant.User_Data); //temporarily
+  
+  const handleLogout = () => {
+    setAuth({});
+    removeBrowserCookie(constant.Auth_Token);
+    removeBrowserCookie(constant.Refresh_Token);
+    removeBrowserCookie(constant.User_Data);
+  };
   return (
     <header>
       <nav className="container">
@@ -36,6 +46,12 @@ export default function Header() {
                     <span>Search</span>
                   </Link>
                 </li>
+                <li
+                  className="text-white/50 hover:text-white transition-all duration-200 cursor-pointer"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </li>
               </>
             )}
             {!isAuthed ? (
@@ -49,23 +65,21 @@ export default function Header() {
               </li>
             ) : (
               <li className="flex items-center">
-                {auth?.user?.avatar ? (
+                {authUser?.avatar ? (
                   <img
                     className="avater-img"
-                    src={previewImage("avatar", auth?.user?.avatar)}
-                    alt={auth?.user?.firstName}
+                    src={previewImage("avatar", authUser?.avatar)}
+                    alt={authUser?.firstName}
                   />
                 ) : (
                   <div className="avater-img bg-orange-600 text-white">
-                    <span className="">
-                      {firstAvatar(auth?.user?.firstName)}
-                    </span>
+                    <span className="">{firstAvatar(authUser?.firstName)}</span>
                   </div>
                 )}
 
-                <Link to={`/profile/${auth?.user?.id}`}>
+                <Link to={`/profile/${authUser?.id}`}>
                   <span className="text-white ml-2">
-                    {fullName(auth?.user?.firstName, auth?.user?.lastName)}
+                    {fullName(authUser?.firstName, authUser?.lastName)}
                   </span>
                 </Link>
               </li>

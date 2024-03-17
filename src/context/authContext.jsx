@@ -1,19 +1,33 @@
 import { createContext, useEffect, useState } from "react";
-import { getUser } from "../utils/authService";
+import { getBrowserCookie } from "../utils/cookieInstance";
+import { constant } from "../utils/queryKey";
 
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({});
+
   useEffect(() => {
-    if (window) {
-      console.log("call 1");
-      const loadUser = getUser(); //this is from localstorge data
-      if (loadUser?.token?.accessToken) {
-        setAuth(loadUser);
-      }
+    const authtoken = getBrowserCookie(constant.Auth_Token);
+    const refreshToken = getBrowserCookie(constant.Refresh_Token);
+    const authUser = getBrowserCookie(constant.User_Data);
+
+    if (authtoken) {
+      // console.log("load user from cookie", {
+      //   authtoken,
+      //   refreshToken,
+      //   authUser,
+      // });
+      setAuth((prev) => ({
+        ...prev,
+        accessToken: authtoken,
+        refreshToken,
+        user: authUser,
+      }));
     }
   }, []);
+
+  console.log("AuthContext:", auth);
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>
       {children}

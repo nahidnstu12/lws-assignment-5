@@ -61,7 +61,7 @@ export default function CreateBlog() {
                   {...register("thumbnail", {
                     required: "Thumbnail is Required",
                   })}
-                  hidden
+                  // hidden
                 />
               </div>
               {!!errors.thumbnail && (

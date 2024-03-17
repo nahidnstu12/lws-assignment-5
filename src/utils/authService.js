@@ -1,36 +1,18 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { key } from "./queryKey";
-import { useAuth } from "../hooks/useAuth";
 import useAxios from "../hooks/useAxios";
-
-const USER_LOCAL_STORAGE_KEY = "TODO_LIST-USER";
-export function saveUser(user) {
-  localStorage.setItem(USER_LOCAL_STORAGE_KEY, JSON.stringify(user));
-}
-
-export function getUser() {
-  console.log("call 2");
-  const user = localStorage.getItem(USER_LOCAL_STORAGE_KEY);
-  return user ? JSON.parse(user) : undefined;
-}
-
-export function removeUser() {
-  localStorage.removeItem(USER_LOCAL_STORAGE_KEY);
-}
+import { removeBrowserCookie, setBrowserCookie } from "./cookieInstance";
+import { constant } from "./queryKey";
 
 const useAuthService = () => {
-  const {api} = useAxios();
-  const queryClient = useQueryClient();
+  const { api } = useAxios();
   const baseURL = `/auth`;
   const navigate = useNavigate();
-  const {  setAuth } = useAuth();
 
   const register = useMutation({
     mutationFn: (body) => api.post(`${baseURL}/register`, body),
-    onSuccess: (data, variables, context) => {
-      console.log("onSuccess", data, variables, context);
-      queryClient.setQueryData([key.register], data.data);
+    onSuccess: (data) => {
+      setBrowserCookie("auth-token", data.data);
       navigate("/");
     },
     //
@@ -38,22 +20,19 @@ const useAuthService = () => {
 
   const login = useMutation({
     mutationFn: (body) => api.post(`${baseURL}/login`, body),
-    onSuccess: (data, variables, context) => {
-      // console.log("onSuccess", data);
-      queryClient.setQueryData([key.register], data.data);
-      saveUser(data.data);
-      setAuth(data.data);
+    onSuccess: (data) => {
+      setBrowserCookie(constant.Auth_Token, data?.data?.token?.accessToken);
+      setBrowserCookie(constant.Refresh_Token, data?.data?.token?.refreshToken);
+      setBrowserCookie(constant.User_Data, data?.data?.user); //maybe move localstorage
       navigate("/");
     },
     onError: (error) => {
       console.error(error);
-      removeUser();
-      setAuth({})
+      removeBrowserCookie(constant.Auth_Token);
+      removeBrowserCookie(constant.Refresh_Token);
+      removeBrowserCookie(constant.User_Data);
     },
   });
-
-  
- 
 
   return { register, login };
 };

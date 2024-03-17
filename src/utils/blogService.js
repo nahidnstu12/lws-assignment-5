@@ -51,20 +51,15 @@ const useBlogService = () => {
   const update = useMutation({
     mutationFn: (id, body) => api.patch(`${baseURL}/${id}`, body),
     onSuccess: (data, variables, context) => {
-      // console.log("onSuccess", data, variables, context);
       queryClient.invalidateQueries([key.blogs, data?.data?.blog?.id]);
     },
-    onMutate: (variables) => {
-      // console.log("onMtate:", variables);
-      return { greeting: "Say hello" };
-    },
+    
   });
 
   const remove = useMutation({
     mutationFn: (id) => api.delete(`${baseURL}/${id}`),
-    onSuccess: (data, variables, context) => {
-      console.log("onSuccess", data, variables, context);
-      queryClient.invalidateQueries([key.blogs]);
+    onSuccess: (data) => {
+      queryClient.invalidateQueries([key.blogs,  data?.data?.blog?.id]);
     },
   });
 

@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { useAuth } from "../hooks/useAuth";
+import { getBrowserCookie } from "../utils/cookieInstance";
+import { constant } from "../utils/queryKey";
 
 const PrivateRoutes = () => {
   const { auth } = useAuth();
@@ -10,18 +12,11 @@ const PrivateRoutes = () => {
   const [authState, setAuthState] = useState(false);
   console.log("PrivateRoutes:", auth);
 
-  // useEffect(() => {
-  //   console.log("after mount");
-  //   setAuthState(auth?.token?.accessToken);
-  // }, [auth?.token?.accessToken]);
 
-  //  useEffect(() => {
-  //    auth?.token?.accessToken || authState  ;
-  //  }, [auth?.token?.accessToken]);
 
   return (
     <>
-      {auth?.token?.accessToken ? (
+      {auth?.accessToken || getBrowserCookie(constant.Auth_Token) ? (
         <>
           <Header />
           <main className="mx-auto max-w-[1020px] py-8">
