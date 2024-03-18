@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useRef, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { firstAvatar, fullName, previewImage } from "../utils/helpers";
-import useProfileService from "../utils/profileService";
+import useProfileService from "../service/profileService";
 import BlogCard from "./BlogCard";
 import { useParams } from "react-router-dom";
 
@@ -47,7 +47,7 @@ export default function ProfileComponent() {
     setEditMode(false);
   };
 
-  console.log("profile data:", profile);
+  // console.log("profile data:", profile);
   return (
     <main className="mx-auto max-w-[1020px] py-8">
       <div className="container">

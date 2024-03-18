@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { Link, useParams } from "react-router-dom";
-import useBlogService from "../utils/blogService";
-import useFavoriteService from "../utils/favoriteService";
+import { useParams } from "react-router-dom";
+import useBlogService from "../service/blogService";
+import useFavoriteService from "../service/favoriteService";
 import {
   convertDateFormat,
   firstAvatar,
@@ -10,7 +10,7 @@ import {
   previewImage,
   transformedText,
 } from "../utils/helpers";
-import useLikesService from "../utils/likeService";
+import useLikesService from "../service/likeService";
 import { key } from "../utils/queryKey";
 import CommentSection from "./CommentSection";
 
@@ -84,7 +84,13 @@ export default function BlogDetails() {
   );
 }
 
-const FloatingAction = ({ blogId, isFavBlog, isLiked, likeCount, commentCount }) => {
+const FloatingAction = ({
+  blogId,
+  isFavBlog,
+  isLiked,
+  likeCount,
+  commentCount,
+}) => {
   const { toggle } = useFavoriteService();
   const { toggle: toggleLike } = useLikesService();
 
@@ -115,7 +121,7 @@ const FloatingAction = ({ blogId, isFavBlog, isLiked, likeCount, commentCount })
             <img src="/src/assets/icons/heart.svg" alt="Favourite" />
           )}
         </li>
-        
+
         <a href="#comments">
           <li>
             <img src="/src/assets/icons/comment.svg" alt="Comments" />

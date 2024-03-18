@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxios from "../hooks/useAxios";
+import { toast } from "react-toastify";
 
 const useCommentService = () => {
   const { api } = useAxios();
@@ -9,6 +10,7 @@ const useCommentService = () => {
     mutationFn: ({ id, body }) => api.post(`/blogs/${id}/comment`, body),
     onSuccess: (data) => {
       queryClient.invalidateQueries(["comments", data?.data?.blog?.id]);
+      toast.success("Comment Created Successfully")
     },
   });
 
@@ -16,6 +18,7 @@ const useCommentService = () => {
     mutationFn: ({ id, cid }) => api.delete(`/blogs/${id}/comment/${cid}`),
     onSuccess: (data) => {
       queryClient.invalidateQueries(["comments", data?.data?.blog?.id]);
+      toast.success("Comment deleted Successfully");
     },
   });
 

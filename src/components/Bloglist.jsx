@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import useServiceHook from "../utils/blogService";
+import useServiceHook from "../service/blogService";
 import { key } from "../utils/queryKey";
 import BlogCard from "./BlogCard";
 import SidebarCard from "./SidebarCard";

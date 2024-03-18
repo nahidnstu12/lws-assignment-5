@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import useAxios from "../hooks/useAxios";
-import { key } from "./queryKey";
+import { key } from "../utils/queryKey";
 
 const useBlogService = () => {
   const { api } = useAxios();
@@ -41,25 +42,27 @@ const useBlogService = () => {
 
   const create = useMutation({
     mutationFn: (body) => api.post(baseURL, body),
-    onSuccess: (data, variables, context) => {
-      // console.log("onSuccess", data, variables, context, data?.data?.blog?.id);
+    onSuccess: (data) => {
+      // console.log("onSuccess", data, data?.data?.blog?.id);
       queryClient.invalidateQueries([key.blogs]);
       navigate(`/blog/${data?.data?.blog?.id}`);
+      toast.success("Blog created successfully");
     },
   });
 
   const update = useMutation({
     mutationFn: (id, body) => api.patch(`${baseURL}/${id}`, body),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries([key.blogs, data?.data?.blog?.id]);
+      toast.success("Blog updated successfully");
     },
-    
   });
 
   const remove = useMutation({
     mutationFn: (id) => api.delete(`${baseURL}/${id}`),
     onSuccess: (data) => {
-      queryClient.invalidateQueries([key.blogs,  data?.data?.blog?.id]);
+      queryClient.invalidateQueries([key.blogs, data?.data?.blog?.id]);
+      toast.success("Blog deleted successfully");
     },
   });
 

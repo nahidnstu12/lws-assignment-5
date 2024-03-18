@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { useForm } from "react-hook-form";
-import useBlogService from "../utils/blogService";
+import useBlogService from "../service/blogService";
 import Field from "./Field";
 
 export default function CreateBlog() {
@@ -13,13 +13,21 @@ export default function CreateBlog() {
     formState: { errors },
   } = useForm();
   console.log("create blog error:", errors);
+  const handleFile = () => {
+    // fileUploaderRef.current.addEventListener("change", () => {});
+    // fileUploaderRef.current.click();
+    // console.log(fileUploaderRef.current);
+  };
   const handleBlogSubmit = (data) => {
     // event.preventDefault();
+    console.log("blog create:", data);
+
     const formdata = new FormData();
     formdata.append("title", data?.title);
     formdata.append("tags", data?.tags);
     formdata.append("content", data?.content);
     if (data.thumbnail[0]) formdata.append("thumbnail", data.thumbnail[0]);
+    // formdata.append("thumbnail", fileUploaderRef.current.files[0]);
 
     // console.log("formdata--", data, formdata);
     create.mutate(formdata);
@@ -32,10 +40,13 @@ export default function CreateBlog() {
             action="#"
             method="POST"
             className="createBlog"
-            // encType="multipart/form-data"
+            encType="multipart/form-data"
             onSubmit={handleSubmit(handleBlogSubmit)}
           >
-            <div className="grid place-items-center bg-slate-600/20 h-[150px] rounded-md my-4">
+            <div
+              className="grid place-items-center bg-slate-600/20 h-[150px] rounded-md my-4"
+              onClick={handleFile}
+            >
               <div className="flex items-center gap-4 hover:scale-110 transition-all cursor-pointer">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -55,12 +66,13 @@ export default function CreateBlog() {
                 <input
                   type="file"
                   name="thumbnail"
-                  id="photo"
+                  id="thumbnail"
                   className="text-sm"
                   accept="image/*"
                   {...register("thumbnail", {
-                    required: "Thumbnail is Required",
+                    // required: "Thumbnail is Required",
                   })}
+                  // ref={fileUploaderRef}
                   // hidden
                 />
               </div>

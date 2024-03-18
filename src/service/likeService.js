@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxios from "../hooks/useAxios";
+import { toast } from "react-toastify";
 
-const useFavoriteService = () => {
+const useLikesService = () => {
   const { api } = useAxios();
   const queryClient = useQueryClient();
 
@@ -15,13 +16,18 @@ const useFavoriteService = () => {
     return response.data;
   };
   const toggle = useMutation({
-    mutationFn: (id) => api.patch(`/blogs/${id}/favourite`),
+    mutationFn: (id) => api.post(`/blogs/${id}/like`),
     onSuccess: (data) => {
-      queryClient.invalidateQueries(["favourites", data?.data?.blog?.id]);
+      queryClient.invalidateQueries(["likes", data?.data?.blog?.id]);
+      if (data?.data?.isLiked) {
+        toast.success("You like this blog!");
+      } else {
+        toast.success("You unlike this blog!");
+      }
     },
   });
 
   return { getList, toggle };
 };
 
-export default useFavoriteService;
+export default useLikesService;

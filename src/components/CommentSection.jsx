@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { useAuth } from "../hooks/useAuth";
-import useCommentService from "../utils/commentService";
+import useCommentService from "../service/commentService";
 import { firstAvatar, fullName } from "../utils/helpers";
 
 export default function CommentSection({ comments, blogId }) {
@@ -11,10 +11,12 @@ export default function CommentSection({ comments, blogId }) {
   const handleCommentSubmit = () => {
     const body = { content: contentRef.current.value };
     create.mutate({ id: blogId, body });
-    // contentRef.current = null;
+    contentRef.current.value = null;
   };
   const handleRemoveComment = (cid) => {
-    remove.mutate({ id: blogId, cid });
+    if (confirm("Are you suyr to delete your comment?")) {
+      remove.mutate({ id: blogId, cid });
+    }
   };
   return (
     <>
@@ -62,7 +64,10 @@ export default function CommentSection({ comments, blogId }) {
                     )}
                   </h5>
                   {auth?.user?.id === comment?.author?.id && (
-                    <button onClick={()=>handleRemoveComment(comment?.id)} className="flex w-full justify-end">
+                    <button
+                      onClick={() => handleRemoveComment(comment?.id)}
+                      className="flex w-full justify-end"
+                    >
                       <img src="/src/assets/icons/delete.svg" alt="Delete" />
                     </button>
                   )}
