@@ -47,12 +47,12 @@ export default function Bloglist() {
             </div>
             <div className="md:col-span-2 h-full w-full space-y-5">
               <SidebarCard
-                sectioTitle={"Most Popular 👍️"}
                 blogs={popularBlogs?.blogs || []}
+                isSection={"popular"}
               />
               <SidebarCard
-                sectioTitle={"Your Favourites ❤️"}
                 blogs={favBlogs?.blogs || []}
+                isSection={"favorite"}
               />
             </div>
           </div>

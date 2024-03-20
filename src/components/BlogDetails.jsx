@@ -1,8 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 import useBlogService from "../service/blogService";
 import useFavoriteService from "../service/favoriteService";
+import useLikesService from "../service/likeService";
 import {
   convertDateFormat,
   firstAvatar,
@@ -10,13 +12,14 @@ import {
   previewImage,
   transformedText,
 } from "../utils/helpers";
-import useLikesService from "../service/likeService";
 import { key } from "../utils/queryKey";
 import CommentSection from "./CommentSection";
 
 export default function BlogDetails() {
   const { id } = useParams();
   const { getOne } = useBlogService();
+  const { auth } = useAuth();
+  const navigate = useNavigate();
   const {
     data: blogData,
     error,
@@ -54,6 +57,16 @@ export default function BlogDetails() {
               <span className="text-sm text-slate-700 dot">
                 {transformedText("Like", blogData?.likes?.length)}
               </span>
+              {auth?.user?.id === blogData?.author?.id && (
+                <span
+                  className="text-sm text-slate-500 dot cursor-pointer"
+                  onClick={() => {
+                    navigate(`/edit-blog/${blogData?.id}`);
+                  }}
+                >
+                  Edit Blog
+                </span>
+              )}
             </div>
             <img
               className="mx-auto w-full md:w-8/12 object-cover h-80 md:h-96"

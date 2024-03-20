@@ -1,11 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { fullName, transformedText } from "../utils/helpers";
 
-export default function SidebarCard({ sectioTitle, blogs }) {
+export default function SidebarCard({ blogs, isSection }) {
   return (
     <div className="sidebar-card">
       <h3 className="text-slate-300 text-xl lg:text-2xl font-semibold">
-        {sectioTitle}
+        {isSection === "favorite" ? "Your Favourites ❤️" : "Most Popular 👍️"}
       </h3>
       <ul className="space-y-5 my-5">
         {blogs?.length === 0 && <p>No data found</p>}
@@ -16,13 +17,24 @@ export default function SidebarCard({ sectioTitle, blogs }) {
                 {blog?.title}
               </h3>
             </Link>
-            <p className="text-slate-600 text-sm">
-              by
-              <Link to={`/profile/${blog?.author?.id}`}>
-                {blog?.author?.firstName} {blog?.author?.lastName}
-              </Link>
-              <span>·</span> {blog?.likes?.length} Likes
-            </p>
+            {blog?.author?.firstName && (
+              <p className="text-slate-600 text-sm">
+                by
+                <Link to={`/profile/${blog?.author?.id}`}>
+                  {fullName(blog?.author?.firstName, blog?.author?.lastName)}
+                </Link>
+                <span>·</span>
+                {transformedText("Like", blog?.likes?.length)}
+              </p>
+            )}
+            {blog?.tags && isSection === "favorite" && (
+              <p class="text-slate-600 text-sm">
+                {blog?.tags
+                  ?.split(",")
+                  .map((item) => `#${item}`)
+                  .join(",")}
+              </p>
+            )}
           </li>
         ))}
       </ul>

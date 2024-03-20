@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import useBlogService from "../service/blogService";
 import {
@@ -15,14 +15,22 @@ export default function BlogCard({ blog }) {
   const { remove } = useBlogService();
   const { auth } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleOpen = () => {
     setIsOpen((prev) => !prev);
   };
 
   const handleBlogDelete = () => {
-    remove.mutate(blog.id);
+    if (confirm("Are you sure to delete?")) {
+      remove.mutate(blog.id);
+    }
   };
+  const handleBlogEdit = () => {
+    navigate(`/edit-blog/${blog?.id}`);
+  };
+
+  // console.log("blog card:", auth);
   return (
     <div className="blog-card">
       <Link to={`/blog/${blog?.id}`}>
@@ -41,9 +49,20 @@ export default function BlogCard({ blog }) {
           </p>
           <div className="flex justify-between items-center">
             <div className="flex items-center capitalize space-x-2">
-              <div className="avater-img bg-indigo-600 text-white">
-                <span className="">{firstAvatar(blog?.author?.firstName)}</span>
-              </div>
+              {blog?.author?.avatar ? (
+                <img
+                  className="avater-img"
+                  src={previewImage("avatar", blog?.author?.avatar)}
+                  alt={blog?.author?.firstName}
+                />
+              ) : (
+                <div className="avater-img bg-indigo-600 text-white">
+                  <span className="">
+                    {firstAvatar(blog?.author?.firstName)}
+                  </span>
+                </div>
+              )}
+
               <div>
                 <h5 className="text-slate-500 text-sm">
                   <Link to={`/profile/${blog?.author?.id}`}>
@@ -67,7 +86,10 @@ export default function BlogCard({ blog }) {
             </button>
             {isOpen && (
               <div className="action-modal-container">
-                <button className="action-menu-item hover:text-lwsGreen">
+                <button
+                  className="action-menu-item hover:text-lwsGreen"
+                  onClick={handleBlogEdit}
+                >
                   <img src="/src/assets/icons/edit.svg" alt="Edit" />
                   Edit
                 </button>

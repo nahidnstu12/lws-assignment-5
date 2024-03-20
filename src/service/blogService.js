@@ -51,9 +51,10 @@ const useBlogService = () => {
   });
 
   const update = useMutation({
-    mutationFn: (id, body) => api.patch(`${baseURL}/${id}`, body),
+    mutationFn: ({id, body}) => api.patch(`${baseURL}/${id}`, body),
     onSuccess: (data) => {
       queryClient.invalidateQueries([key.blogs, data?.data?.blog?.id]);
+      navigate(`/blog/${data?.data?.id}`);
       toast.success("Blog updated successfully");
     },
   });

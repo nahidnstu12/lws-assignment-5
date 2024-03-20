@@ -1,36 +1,90 @@
-import React, { useRef } from "react";
+import { useQuery } from "@tanstack/react-query";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
 import useBlogService from "../service/blogService";
+import { previewImage } from "../utils/helpers";
+import { key } from "../utils/queryKey";
 import Field from "./Field";
 
 export default function CreateBlog() {
-  const { create } = useBlogService();
+  const { create, getOne, update } = useBlogService();
+  const [previewThumb, setPreviewImage] = useState(null);
+  const [fileInput, setFileInput] = useState(null);
+  const { id } = useParams();
+  const {
+    data: itemData,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: [key.blogs, id],
+    queryFn: getOne,
+  });
 
   const fileUploaderRef = useRef();
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
-  console.log("create blog error:", errors);
+  console.log("create blog error:", { errors, itemData, previewThumb });
+
   const handleFile = () => {
-    // fileUploaderRef.current.addEventListener("change", () => {});
-    // fileUploaderRef.current.click();
-    // console.log(fileUploaderRef.current);
+    fileUploaderRef.current.click();
   };
+
+  const handleImageChange = (event) => {
+    console.log("hit");
+
+    const file = event.target.files[0];
+    console.log("handleImageChange", file);
+    if (file) {
+      setFileInput(file);
+      setPreviewImage(URL.createObjectURL(file));
+    } else {
+      setPreviewImage(null);
+      setFileInput(null);
+    }
+  };
+
+  const initData = {
+    title: "",
+    tags: "",
+    content: "",
+    thumbnail: "",
+  };
+
+  useEffect(() => {
+    if (itemData) {
+      const updateData = {
+        title: itemData?.title,
+        tags: itemData?.tags,
+        content: itemData?.content,
+        thumbnail: itemData?.thumbnail,
+      };
+
+      reset(updateData);
+    } else {
+      reset(initData);
+    }
+  }, [itemData]);
+
   const handleBlogSubmit = (data) => {
     // event.preventDefault();
-    console.log("blog create:", data);
 
     const formdata = new FormData();
     formdata.append("title", data?.title);
     formdata.append("tags", data?.tags);
     formdata.append("content", data?.content);
-    if (data.thumbnail[0]) formdata.append("thumbnail", data.thumbnail[0]);
-    // formdata.append("thumbnail", fileUploaderRef.current.files[0]);
+    if (fileInput) formdata.append("thumbnail", fileInput);
 
-    // console.log("formdata--", data, formdata);
-    create.mutate(formdata);
+    if (id) {
+      update.mutate({ id, body: formdata });
+      console.log("blog update:", data);
+    } else {
+      create.mutate(formdata);
+    }
   };
   return (
     <main>
@@ -43,6 +97,16 @@ export default function CreateBlog() {
             encType="multipart/form-data"
             onSubmit={handleSubmit(handleBlogSubmit)}
           >
+            {previewThumb ? (
+              <img src={previewThumb} alt="Uploaded Thumbnail Preview" />
+            ) : id && itemData?.thumbnail ? (
+              <img
+                className="mx-auto w-full md:w-8/12 object-cover h-80 md:h-96"
+                src={previewImage("blog", itemData?.thumbnail)}
+                alt=""
+              />
+            ) : null}
+
             <div
               className="grid place-items-center bg-slate-600/20 h-[150px] rounded-md my-4"
               onClick={handleFile}
@@ -69,11 +133,9 @@ export default function CreateBlog() {
                   id="thumbnail"
                   className="text-sm"
                   accept="image/*"
-                  {...register("thumbnail", {
-                    // required: "Thumbnail is Required",
-                  })}
-                  // ref={fileUploaderRef}
-                  // hidden
+                  ref={fileUploaderRef}
+                  onChange={handleImageChange}
+                  hidden
                 />
               </div>
               {!!errors.thumbnail && (
@@ -129,7 +191,7 @@ export default function CreateBlog() {
               type="submit"
               className="bg-indigo-600 text-white px-6 py-2 md:py-3 rounded-md hover:bg-indigo-700 transition-all duration-200"
             >
-              Create Blog
+              {id ? "Update Blog" : "Create Blog"}
             </button>
           </form>
         </div>
