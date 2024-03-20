@@ -8,6 +8,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import App from "./App.jsx";
 import AuthProvider from "./context/authContext";
+import SearchProvider from "./context/searchContext.jsx";
 
 const queryClient = new QueryClient();
 
@@ -15,13 +16,15 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <CookiesProvider>
       <AuthProvider>
-        <QueryClientProvider client={queryClient}>
-          <Router>
-            <App />
-            <ToastContainer />
-            <ReactQueryDevtools initialIsOpen={false} />
-          </Router>
-        </QueryClientProvider>
+        <SearchProvider>
+          <QueryClientProvider client={queryClient}>
+            <Router>
+              <App />
+              <ToastContainer />
+              <ReactQueryDevtools initialIsOpen={false} />
+            </Router>
+          </QueryClientProvider>
+        </SearchProvider>
       </AuthProvider>
     </CookiesProvider>
   </React.StrictMode>

@@ -4,6 +4,7 @@ import Footer from '../components/Footer'
 import Bloglist from '../components/Bloglist'
 
 export default function Home() {
+   
   return (
     <>
       

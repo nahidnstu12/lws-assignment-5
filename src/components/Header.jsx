@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useSearch } from "../context/searchContext";
 import { useAuth } from "../hooks/useAuth";
 import { getBrowserCookie, removeBrowserCookie } from "../utils/cookieInstance";
 import { firstAvatar, fullName, previewImage } from "../utils/helpers";
@@ -9,7 +10,7 @@ export default function Header() {
   const { auth, setAuth } = useAuth();
   const isAuthed = auth?.accessToken || getBrowserCookie(constant.Auth_Token); //temporarily
   const authUser = auth?.user || getBrowserCookie(constant.User_Data); //temporarily
-  
+  const { setIsOpenSearch } = useSearch();
   const handleLogout = () => {
     setAuth({});
     removeBrowserCookie(constant.Auth_Token);
@@ -37,7 +38,11 @@ export default function Header() {
                     Write
                   </Link>
                 </li>
-                <li>
+                <li
+                  onClick={() => {
+                    setIsOpenSearch(true);
+                  }}
+                >
                   <Link
                     to="#"
                     className="flex items-center gap-2 cursor-pointer"
