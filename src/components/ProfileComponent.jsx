@@ -5,6 +5,8 @@ import { useAuth } from "../hooks/useAuth";
 import useProfileService from "../service/profileService";
 import { firstAvatar, fullName, previewImage } from "../utils/helpers";
 import BlogCard from "./BlogCard";
+import edit from "/src/assets/icons/edit.svg";
+import check from "/src/assets/icons/check.svg";
 
 export default function ProfileComponent() {
   const { id } = useParams();
@@ -71,7 +73,7 @@ export default function ProfileComponent() {
                 onClick={handleImageUpload}
                 type="submit"
               >
-                <img src="/src/assets/icons/edit.svg" alt="Edit" />
+                <img src={edit} alt="Edit" />
               </button>
               <input id="file" type="file" ref={fileUploaderRef} hidden />
             </form>
@@ -103,14 +105,14 @@ export default function ProfileComponent() {
                 className="flex-center h-7 w-7 rounded-full"
                 onClick={handleProfileUpdate}
               >
-                <img src="/src/assets/icons/check.svg" alt="Check" />
+                <img src={check} alt="Check" />
               </button>
             ) : (
               <button
                 className="flex-center h-7 w-7 rounded-full"
                 onClick={() => setEditMode(true)}
               >
-                <img src="/src/assets/icons/edit.svg" alt="Edit" />
+                <img src={edit} alt="Edit" />
               </button>
             )}
           </div>

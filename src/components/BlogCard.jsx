@@ -10,6 +10,9 @@ import {
   transformedText,
   truncatedContent,
 } from "../utils/helpers";
+import dots from "/src/assets/icons/3dots.svg";
+import edit from "/src/assets/icons/edit.svg";
+import Delete from "/src/assets/icons/delete.svg";
 
 export default function BlogCard({ blog }) {
   const { remove } = useBlogService();
@@ -81,7 +84,7 @@ export default function BlogCard({ blog }) {
         {auth?.user?.id === blog?.author?.id && (
           <div className="absolute right-0 top-0">
             <button onClick={handleOpen}>
-              <img src="/src/assets/icons/3dots.svg" alt="3dots of Action" />
+              <img src={dots} alt="3dots of Action" />
             </button>
             {isOpen && (
               <div className="action-modal-container">
@@ -89,14 +92,14 @@ export default function BlogCard({ blog }) {
                   className="action-menu-item hover:text-lwsGreen"
                   onClick={handleBlogEdit}
                 >
-                  <img src="/src/assets/icons/edit.svg" alt="Edit" />
+                  <img src={edit} alt="Edit" />
                   Edit
                 </button>
                 <button
                   onClick={handleBlogDelete}
                   className="action-menu-item hover:text-red-500"
                 >
-                  <img src="/src/assets/icons/delete.svg" alt="Delete" />
+                  <img src={Delete} alt="Delete" />
                   Delete
                 </button>
               </div>

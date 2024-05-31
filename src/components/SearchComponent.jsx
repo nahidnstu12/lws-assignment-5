@@ -12,7 +12,6 @@ export default function SearchComponent({ handleClose }) {
 
   const {
     data: blogs,
-    error: blogError,
     isLoading: isBloagLoading,
   } = useQuery({
     queryKey: ["search", { query: searchQ }],

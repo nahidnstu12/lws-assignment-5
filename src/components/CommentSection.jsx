@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { useAuth } from "../hooks/useAuth";
 import useCommentService from "../service/commentService";
 import { firstAvatar, fullName } from "../utils/helpers";
+import Delete from "/src/assets/icons/delete.svg";
 
 export default function CommentSection({ comments, blogId }) {
   const { auth } = useAuth();
@@ -68,7 +69,7 @@ export default function CommentSection({ comments, blogId }) {
                       onClick={() => handleRemoveComment(comment?.id)}
                       className="flex w-full justify-end"
                     >
-                      <img src="/src/assets/icons/delete.svg" alt="Delete" />
+                      <img src={Delete} alt="Delete" />
                     </button>
                   )}
                   <p className="text-slate-300">{comment?.content}</p>

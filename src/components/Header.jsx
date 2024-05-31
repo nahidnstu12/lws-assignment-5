@@ -5,6 +5,8 @@ import { useAuth } from "../hooks/useAuth";
 import { getBrowserCookie, removeBrowserCookie } from "../utils/cookieInstance";
 import { firstAvatar, fullName, previewImage } from "../utils/helpers";
 import { constant } from "../utils/queryKey";
+import logo from "/src/assets/logo.svg";
+import search from "/src/assets/icons/search.svg";
 
 export default function Header() {
   const { auth, setAuth } = useAuth();
@@ -22,7 +24,7 @@ export default function Header() {
       <nav className="container">
         <div>
           <Link to="/">
-            <img className="w-32" src="/src/assets/logo.svg" alt="lws" />
+            <img className="w-32" src={logo} alt="lws" />
           </Link>
         </div>
 
@@ -47,7 +49,7 @@ export default function Header() {
                     to="#"
                     className="flex items-center gap-2 cursor-pointer"
                   >
-                    <img src="/src/assets/icons/search.svg" alt="Search" />
+                    <img src={search} alt="Search" />
                     <span>Search</span>
                   </Link>
                 </li>

@@ -14,6 +14,11 @@ import {
 } from "../utils/helpers";
 import { key } from "../utils/queryKey";
 import CommentSection from "./CommentSection";
+import fillLike from "/src/assets/icons/like-filled.svg";
+import Like from "/src/assets/icons/like.svg";
+import fillHeart from "/src/assets/icons/heart-filled.svg";
+import Heart from "/src/assets/icons/heart.svg";
+import comment from "/src/assets/icons/comment.svg";
 
 export default function BlogDetails() {
   const { id } = useParams();
@@ -129,23 +134,23 @@ const FloatingAction = ({
         <li onClick={handleToggleLike}>
           {/* TODO: Fix later */}
           {isLiked ? (
-            <img src="/src/assets/icons/like-filled.svg" alt="Like" />
+            <img src={fillLike} alt="Like" />
           ) : (
-            <img src="/src/assets/icons/like.svg" alt="Like" />
+            <img src={Like} alt="Like" />
           )}
           <span>{likeCount}</span>
         </li>
         <li onClick={handleToggleFav}>
           {isFavBlog ? (
-            <img src="/src/assets/icons/heart-filled.svg" alt="Favourite" />
+            <img src={fillHeart} alt="Favourite" />
           ) : (
-            <img src="/src/assets/icons/heart.svg" alt="Favourite" />
+            <img src={Heart} alt="Favourite" />
           )}
         </li>
 
         <a href="#comments">
           <li>
-            <img src="/src/assets/icons/comment.svg" alt="Comments" />
+            <img src={comment} alt="Comments" />
             <span>{commentCount}</span>
           </li>
         </a>
