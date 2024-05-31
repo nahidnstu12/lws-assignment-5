@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useCallback, useRef, useState } from "react";
-import useSearchService from "../service/searchService";
-import { debounce, previewImage, truncatedContent } from "../utils/helpers";
 import { Link } from "react-router-dom";
 import { useSearch } from "../context/searchContext";
+import useSearchService from "../service/searchService";
+import { debounce, previewImage, truncatedContent } from "../utils/helpers";
 
 export default function SearchComponent({ handleClose }) {
   const { searchHandler } = useSearchService();
@@ -13,7 +13,7 @@ export default function SearchComponent({ handleClose }) {
   const {
     data: blogs,
     error: blogError,
-    isLoading: bloagLoading,
+    isLoading: isBloagLoading,
   } = useQuery({
     queryKey: ["search", { query: searchQ }],
     queryFn: searchHandler,
@@ -25,8 +25,6 @@ export default function SearchComponent({ handleClose }) {
   const debouncedSearch = useCallback(debounce(handleSearch, 500), [
     handleSearch,
   ]);
-
-  console.log("search result", blogs, { searchQ });
 
   return (
     <div className="">
@@ -47,11 +45,15 @@ export default function SearchComponent({ handleClose }) {
           {blogs?.data?.length > 0 && (
             <div className="">
               <h3 className="text-slate-400 font-bold mt-6">Search Results</h3>
-              <div className="my-4 divide-y-2 divide-slate-500/30 max-h-[440px] overflow-y-scroll overscroll-contain">
-                {blogs?.data?.map((blog) => (
-                  <BlogCard blog={blog} key={blog?.id} />
-                ))}
-              </div>
+              {isBloagLoading ? (
+                <div>Loading...</div>
+              ) : (
+                <div className="my-4 divide-y-2 divide-slate-500/30 max-h-[440px] overflow-y-scroll overscroll-contain">
+                  {blogs?.data?.map((blog) => (
+                    <BlogCard blog={blog} key={blog?.id} />
+                  ))}
+                </div>
+              )}
             </div>
           )}
           <div onClick={() => handleClose(false)}>
@@ -70,7 +72,12 @@ export default function SearchComponent({ handleClose }) {
 const BlogCard = ({ blog }) => {
   const { setIsOpenSearch } = useSearch();
   return (
-    <Link to={`/blog/${blog?.id}`} onClick={()=> {setIsOpenSearch(false);}}>
+    <Link
+      to={`/blog/${blog?.id}`}
+      onClick={() => {
+        setIsOpenSearch(false);
+      }}
+    >
       <div className="flex gap-6 py-2">
         <img
           className="h-28 object-contain"

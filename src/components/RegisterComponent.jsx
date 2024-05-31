@@ -1,8 +1,8 @@
-import React from 'react'
-import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
-import Field from './Field';
-import useAuthService from '../utils/authService';
+import React from "react";
+import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+import useAuthService from "../utils/authService";
+import Field from "./Field";
 
 export default function RegisterComponent() {
   const { register: registerHandler } = useAuthService();
@@ -13,12 +13,13 @@ export default function RegisterComponent() {
     setError,
   } = useForm();
 
+  console.log("register err:", errors);
+
   const submitForm = async (formData) => {
     // console.log(formData);
     try {
-      
       let response = registerHandler.mutate(formData);
-      console.log({response});
+
 
       if (response.status === 201) {
         navigate("/login");
@@ -49,18 +50,20 @@ export default function RegisterComponent() {
                 className={`auth-input ${
                   !!errors.firstName ? "border-red-500" : "border-white/20"
                 }`}
-                type="firstName"
+                type="text"
                 name="firstName"
                 id="firstName"
               />
             </Field>
             <Field label="Last Name" error={errors.lastName}>
               <input
-                {...register("lastName")}
+                {...register("lastName", {
+                  required: "Last Name is Required",
+                })}
                 className={`auth-input ${
                   !!errors.lastName ? "border-red-500" : "border-white/20"
                 }`}
-                type="lastName"
+                type="text"
                 name="lastName"
                 id="lastName"
               />

@@ -30,7 +30,6 @@ export default function BlogCard({ blog }) {
     navigate(`/edit-blog/${blog?.id}`);
   };
 
-  // console.log("blog card:", auth);
   return (
     <div className="blog-card">
       <Link to={`/blog/${blog?.id}`}>

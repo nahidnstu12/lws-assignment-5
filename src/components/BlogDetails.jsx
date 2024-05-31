@@ -28,7 +28,15 @@ export default function BlogDetails() {
     queryKey: [key.blogs, id],
     queryFn: getOne,
   });
-  console.log("blogData:", blogData);
+
+  if(error){
+    return <div>{error}</div>
+  }
+
+  if(isLoading){
+    return <div>Loading data...</div>
+  }
+
   return (
     <>
       <main>

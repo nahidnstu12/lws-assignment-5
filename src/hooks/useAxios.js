@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useEffect } from "react";
-import { Navigate } from "react-router-dom";
 import { api } from "../utils/axios";
 import { getBrowserCookie, setBrowserCookie } from "../utils/cookieInstance";
 import { constant } from "../utils/queryKey";
@@ -8,7 +7,6 @@ import { useAuth } from "./useAuth";
 
 const useAxios = () => {
   const { auth, setAuth } = useAuth();
-  // console.log({ authToken: auth?.accessToken });
 
   useEffect(() => {
     // Add a request interceptor
@@ -41,12 +39,9 @@ const useAxios = () => {
               `${import.meta.env.VITE_SERVER_URI}/auth/refresh-token`,
               { refreshToken: oldRefreshToken }
             );
-            // if (response?.status === 400) {
-            //  return <Navigate to="/login" />;
-            // }
+           
             const { accessToken } = response.data;
 
-            console.log(`New Token: ${accessToken}`);
             setBrowserCookie(constant.Auth_Token, accessToken);
             setAuth({ ...auth, accessToken });
 

@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useRef, useState } from "react";
-import { useAuth } from "../hooks/useAuth";
-import { firstAvatar, fullName, previewImage } from "../utils/helpers";
-import useProfileService from "../service/profileService";
-import BlogCard from "./BlogCard";
 import { useParams } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import useProfileService from "../service/profileService";
+import { firstAvatar, fullName, previewImage } from "../utils/helpers";
+import BlogCard from "./BlogCard";
 
 export default function ProfileComponent() {
-   const { id } = useParams();
+  const { id } = useParams();
   const { getProfile, updateProfile, updateAvatar } = useProfileService();
   const { auth } = useAuth();
   const fileUploaderRef = useRef();
@@ -55,7 +55,7 @@ export default function ProfileComponent() {
           <div className="relative mb-8 max-h-[180px] max-w-[180px] h-[120px] w-[120px] rounded-full lg:mb-11 lg:max-h-[218px] lg:max-w-[218px]">
             {profile?.avatar ? (
               <img
-                className="max-w-full rounded-full"
+                className="max-w-full rounded-full w-[500px] h-[150px]"
                 src={previewImage("avatar", profile?.avatar)}
                 alt={profile?.firstName}
               />

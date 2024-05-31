@@ -17,7 +17,7 @@ export default function LoginComponent() {
     try {
       loginHandler.mutate(formData);
     } catch (error) {
-      console.error(error);
+      console.error("xlient err=>",error);
       setError("root.random", {
         type: "random",
         message: `Something went wrong: ${error.message}`,
@@ -39,7 +39,6 @@ export default function LoginComponent() {
                 type="email"
                 name="email"
                 id="email"
-                value={"aa@mail.com"}
               />
             </Field>
             <Field label="Password" error={errors.password}>
@@ -51,7 +50,6 @@ export default function LoginComponent() {
                     message: "Your password must be at least 8 characters",
                   },
                 })}
-                value={"password"}
                 className={`auth-input ${
                   !!errors.password ? "border-red-500" : "border-white/20"
                 }`}
