@@ -4,16 +4,14 @@ import { Link } from "react-router-dom";
 import { useSearch } from "../context/searchContext";
 import useSearchService from "../service/searchService";
 import { debounce, previewImage, truncatedContent } from "../utils/helpers";
+import close from "/src/assets/icons/close.svg";
 
 export default function SearchComponent({ handleClose }) {
   const { searchHandler } = useSearchService();
   const [searchQ, setSearchQ] = useState("");
   const searchRef = useRef();
 
-  const {
-    data: blogs,
-    isLoading: isBloagLoading,
-  } = useQuery({
+  const { data: blogs, isLoading: isBloagLoading } = useQuery({
     queryKey: ["search", { query: searchQ }],
     queryFn: searchHandler,
   });
@@ -57,7 +55,7 @@ export default function SearchComponent({ handleClose }) {
           )}
           <div onClick={() => handleClose(false)}>
             <img
-              src="/src/assets/icons/close.svg"
+              src={close}
               alt="Close"
               className="absolute right-2 top-2 cursor-pointer w-8 h-8"
             />

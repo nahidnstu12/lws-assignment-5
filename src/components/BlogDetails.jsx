@@ -19,6 +19,7 @@ import Like from "/src/assets/icons/like.svg";
 import fillHeart from "/src/assets/icons/heart-filled.svg";
 import Heart from "/src/assets/icons/heart.svg";
 import comment from "/src/assets/icons/comment.svg";
+import { Link } from "react-router-dom";
 
 export default function BlogDetails() {
   const { id } = useParams();
@@ -57,12 +58,14 @@ export default function BlogDetails() {
                     {firstAvatar(blogData?.author?.firstName)}
                   </span>
                 </div>
-                <h5 className="text-slate-500 text-sm">
-                  {fullName(
-                    blogData?.author?.firstName,
-                    blogData?.author?.lastName
-                  )}
-                </h5>
+                <Link to={`/profile/${blogData?.author?.id}`}>
+                  <h5 className="text-slate-500 text-sm">
+                    {fullName(
+                      blogData?.author?.firstName,
+                      blogData?.author?.lastName
+                    )}
+                  </h5>
+                </Link>
               </div>
               <span className="text-sm text-slate-700 dot">
                 {convertDateFormat(blogData?.createdAt)}
